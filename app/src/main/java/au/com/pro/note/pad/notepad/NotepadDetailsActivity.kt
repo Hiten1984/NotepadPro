@@ -27,12 +27,10 @@ class NotepadDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.notepad_details_activity)
 
-//        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         notepadDatabase = NotepadDatabase.getNotePadDB(this)
-
         notepadDao = notepadDatabase.notepadDao()
 
         viewModel = ViewModelProviders.of(this).get(NotepadViewModel::class.java)

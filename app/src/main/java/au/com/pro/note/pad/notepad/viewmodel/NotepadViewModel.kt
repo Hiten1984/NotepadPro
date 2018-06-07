@@ -3,34 +3,25 @@ package au.com.pro.note.pad.notepad.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.os.AsyncTask
-import au.com.pro.note.pad.notepad.data.db.NotepadDatabase
 import au.com.pro.note.pad.notepad.data.model.Notepad
+import au.com.pro.note.pad.notepad.repository.NotepadRepository
 
 class NotepadViewModel(application: Application) : AndroidViewModel(application) {
 
-    var noteList : LiveData<List<Notepad>>
-    private val notesDb: NotepadDatabase
+    private var noteList : LiveData<List<Notepad>>
+    private val notepadRepo: NotepadRepository
 
     init {
-        notesDb = NotepadDatabase.getNotePadDB(this.getApplication())
-        noteList = notesDb.notepadDao().getAllNotes()
+        notepadRepo = NotepadRepository(application)
+        noteList = notepadRepo.getNotesList()
     }
 
-    fun getNotesList() : LiveData<List<Notepad>> {
+    fun getAllNotesList() : LiveData<List<Notepad>> {
         return noteList
     }
 
     fun addNotes(notepad: Notepad) {
-        addAsyncTask(notesDb).execute(notepad)
+        notepadRepo.addNotes(notepad)
     }
 
-    class addAsyncTask(notesDb: NotepadDatabase): AsyncTask<Notepad, Void, Void>() {
-        private var notepadDb = notesDb
-
-        override fun doInBackground(vararg params: Notepad): Void? {
-            notepadDb.notepadDao().insertNote(params[0])
-            return null
-        }
-    }
 }

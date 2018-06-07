@@ -50,15 +50,13 @@ class NotepadActivity : AppCompatActivity(), NotepadAdapter.OnItemClickListener 
         notepadDao = notepadDatabase.notepadDao()
         notesList = notepadDao.getAllNotes()
 
-//        invalidateOptionsMenu()
-
         notepadAdapter = NotepadAdapter(arrayListOf(), this)
         notepad_list_items.layoutManager = LinearLayoutManager(this)
         notepad_list_items.adapter = notepadAdapter
 
         viewModel = ViewModelProviders.of(this).get(NotepadViewModel::class.java)
 
-        viewModel.getNotesList().observe(
+        viewModel.getAllNotesList().observe(
                 this,
                 Observer { notepad: List<Notepad>? ->
                     notepadList = notepad
@@ -82,15 +80,11 @@ class NotepadActivity : AppCompatActivity(), NotepadAdapter.OnItemClickListener 
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_notepad, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
             R.id.menu_add_note -> {
                 openDetailsActivity()
@@ -98,7 +92,8 @@ class NotepadActivity : AppCompatActivity(), NotepadAdapter.OnItemClickListener 
             }
             R.id.menu_delete_all -> {
                 deleteAllNotes()
-                true }
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
