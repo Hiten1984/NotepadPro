@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="au.com.pro.note.pad.notepad.NotepadActivity">
+    <item
+        android:id="@+id/menu_delete_all"
+        android:title="Delete All"
+        android:icon="@drawable/ic_delete_all_white_24dp"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_add_note"
+        android:title="Add"
+        android:icon="@drawable/ic_add_white_24dp"
+        app:showAsAction="always" />
+
+</menu>
