@@ -32,11 +32,7 @@ class NotepadAdapter(notepad: ArrayList<Notepad>, listener: OnItemClickListener)
         var currentNote: Notepad = listNotepad[position]
 
         holder.title.text = currentNote.text
-        var date: Long = currentNote.date
-        var dateString: String = SimpleDateFormat("dd MMM, YY").format(date)
-        holder.date.text = dateString
-//        holder.date.text = currentNote.date.toString()
-
+        holder.date.text = getDate(currentNote)
         holder.bind(currentNote, listenerContact)
     }
 
@@ -45,6 +41,10 @@ class NotepadAdapter(notepad: ArrayList<Notepad>, listener: OnItemClickListener)
         notifyDataSetChanged()
     }
 
+    private fun getDate(currentDate: Notepad): String {
+        var date: Long = currentDate.date
+        return SimpleDateFormat("dd MMM, YY").format(date)
+    }
 
     class NotepadViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var title = itemView.findViewById<TextView>(R.id.notepad_title_text)!!

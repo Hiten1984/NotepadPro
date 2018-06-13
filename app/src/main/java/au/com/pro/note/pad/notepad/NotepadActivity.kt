@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.view.GravityCompat
+import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
@@ -12,12 +14,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.ImageView
 import au.com.pro.note.pad.notepad.adapter.NotepadAdapter
 import au.com.pro.note.pad.notepad.data.dao.NotepadDao
 import au.com.pro.note.pad.notepad.data.db.NotepadDatabase
 import au.com.pro.note.pad.notepad.data.model.Notepad
 import au.com.pro.note.pad.notepad.viewmodel.NotepadViewModel
-
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_notepad.*
 import kotlinx.android.synthetic.main.content_notepad.*
 
@@ -40,11 +43,22 @@ class NotepadActivity : AppCompatActivity(), NotepadAdapter.OnItemClickListener 
 
     private var notepadList: List<Notepad>?  = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_notepad)
+        setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        val actionbar: ActionBar? = supportActionBar
+        actionbar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_menu)
+        }
+
+        nav_view.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            drawer_layout.closeDrawers()
+            true
+        }
 
         notepadDatabase = NotepadDatabase.getNotePadDB(this)
         notepadDao = notepadDatabase.notepadDao()
@@ -92,6 +106,10 @@ class NotepadActivity : AppCompatActivity(), NotepadAdapter.OnItemClickListener 
             }
             R.id.menu_delete_all -> {
                 deleteAllNotes()
+                true
+            }
+            android.R.id.home -> {
+                drawer_layout.openDrawer(GravityCompat.START)
                 true
             }
             else -> super.onOptionsItemSelected(item)
